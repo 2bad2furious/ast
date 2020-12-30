@@ -68,7 +68,7 @@ private data class TreeMap<State>(
     }
 
     override fun recursive(
-        nodes: List<Ast>,
+        nodes: List<Ast>
     ): AstResult<State, List<Ast>> {
         return copy(
             skip = emptyMap(),

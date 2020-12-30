@@ -6,9 +6,9 @@ import kotlinx.ast.common.filter
 import kotlinx.ast.common.filter.byTypeNode
 import kotlinx.ast.common.map.TreeMapContext
 
-sealed class Klass() : AstWithExtensions
+sealed class Klass : AstWithExtensions
 
-sealed class KlassNode<Self : KlassNode<Self>>() : Klass(),
+sealed class KlassNode<Self : KlassNode<Self>> : Klass(),
     AstNodeSelfTyped<Self>,
     AstSelfTypedWithExtensions<Self>
 
@@ -17,7 +17,7 @@ data class KlassModifierGroup(val group: String)
 data class KlassModifier(
     val modifier: String,
     val group: KlassModifierGroup,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : Klass() {
     override val description: String = "KlassModifier($modifier, ${group.group})"
 
@@ -38,7 +38,7 @@ fun List<KlassIdentifier>.identifierName(): String {
 data class KlassComment(
     val comment: String,
     val type: KlassCommentType,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : Klass() {
     override val description: String = "KlassComment(${type.rawName})"
 
@@ -52,7 +52,7 @@ data class KlassIdentifier(
     val parameter: List<KlassIdentifier> = emptyList(),
     override val children: List<Ast> = emptyList(),
     val nullable: Boolean = false,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : KlassNode<KlassIdentifier>(), AstWithAttributes {
     override val attributes: List<Ast> = parameter
 
@@ -103,11 +103,11 @@ data class KlassIdentifier(
 
 data class KlassString(
     override val children: List<StringComponent>,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : KlassNode<KlassString>() {
     constructor(
         vararg children: StringComponent,
-        attachments: AstAttachments = AstAttachments(),
+        attachments: AstAttachments = AstAttachments()
     ) : this(children.toList(), attachments)
 
     override val description: String = "KlassString"
@@ -131,7 +131,7 @@ data class KlassString(
 data class KlassAnnotation(
     val identifier: List<KlassIdentifier>,
     val arguments: List<KlassDeclaration>,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : KlassNode<KlassAnnotation>(), AstWithAttributes {
     override val attributes: List<Ast> = identifier
 
@@ -162,7 +162,7 @@ data class KlassAnnotation(
 data class KlassTypeParameter(
     val generic: KlassIdentifier,
     val base: List<KlassIdentifier>,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : KlassNode<KlassTypeParameter>() {
 
     override val description: String = "KlassTypeParameter"
@@ -191,7 +191,7 @@ data class KlassTypeParameter(
 data class KlassInheritance(
     val type: KlassIdentifier,
     val annotations: List<KlassAnnotation> = emptyList(),
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : KlassNode<KlassInheritance>() {
     override val description: String = "KlassInheritance"
     override val children: List<Ast> = listOf(
@@ -229,7 +229,7 @@ data class KlassDeclaration(
     val inheritance: List<KlassInheritance> = emptyList(),
     val expressions: List<Ast> = emptyList(),
     val comments: List<KlassComment> = emptyList(),
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : KlassNode<KlassDeclaration>(), AstWithAttributes {
     override val attributes: List<Ast> = listOfNotNull(identifier, type)
 
@@ -247,7 +247,7 @@ data class KlassDeclaration(
         typeParameters,
         inheritance,
         expressions,
-        comments,
+        comments
     ).flatten()
 
     override fun withAttachments(attachments: AstAttachments): KlassDeclaration {
@@ -267,13 +267,13 @@ private val klassDeclarationKeywords: Map<String, String> = mapOf(
     "OBJECT" to "object",
     "primaryConstructor" to "constructor",
     "valueArgument" to "argument",
-    "classParameter" to "parameter",
+    "classParameter" to "parameter"
 )
 
 fun <State> TreeMapContext<State>.toKlassDeclaration(
     node: AstNode,
     attachments: AstAttachments = AstAttachments(),
-    expressions: ((List<Ast>) -> AstResult<State, List<Ast>>)? = null,
+    expressions: ((List<Ast>) -> AstResult<State, List<Ast>>)? = null
 ): AstResult<State, KlassDeclaration> {
     val descriptions = node.children.descriptions().toSet() + node.description
     val keywords = klassDeclarationKeywords.mapNotNull { (key, value) ->
@@ -298,7 +298,7 @@ fun <State> TreeMapContext<State>.toKlassDeclaration(
     keyword: String,
     ast: List<Ast>,
     attachments: AstAttachments = AstAttachments(),
-    expressions: ((List<Ast>) -> AstResult<State, List<Ast>>)? = null,
+    expressions: ((List<Ast>) -> AstResult<State, List<Ast>>)? = null
 ): AstResult<State, KlassDeclaration> {
     val identifiers = ast.filterIsInstance<KlassIdentifier>()
 
@@ -312,7 +312,7 @@ fun <State> TreeMapContext<State>.toKlassDeclaration(
     val inheritance = ast.filterIsInstance<KlassInheritance>()
     val comments = ast.filterIsInstance<KlassComment>()
 
-    val used = setOfNotNull(identifier, type) +
+    val used = sequenceOf(identifier, type).filterNotNull().toSet() +
             annotations +
             modifiers +
             parameter +
@@ -332,7 +332,7 @@ fun <State> TreeMapContext<State>.toKlassDeclaration(
             inheritance = inheritance,
             expressions = other,
             comments = comments,
-            attachments = attachments,
+            attachments = attachments
         )
     }
 }

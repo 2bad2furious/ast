@@ -3,7 +3,7 @@ package kotlinx.ast.common.ast
 data class AstInfoPosition(
     val index: Int,
     val line: Int,
-    val row: Int,
+    val row: Int
 ) {
     override fun toString(): String {
         return "$line:$row"
@@ -56,7 +56,7 @@ val emptyAstInfoPosition: AstInfoPosition = AstInfoPosition(-1, -1, -1)
 data class AstInfo(
     val id: Int,
     val start: AstInfoPosition,
-    val stop: AstInfoPosition,
+    val stop: AstInfoPosition
 ) {
     override fun toString(): String {
         return (if (this == emptyAstInfo) {
@@ -76,7 +76,7 @@ data class AstInfo(
     infix operator fun plus(other: AstInfo): AstInfo {
         return emptyAstInfo.copy(
             start = start - other.start,
-            stop = stop + other.stop,
+            stop = stop + other.stop
         )
     }
 }
@@ -96,5 +96,5 @@ val AstInfo?.validOrNull: AstInfo?
 val emptyAstInfo: AstInfo = AstInfo(
     id = -1,
     start = emptyAstInfoPosition,
-    stop = emptyAstInfoPosition,
+    stop = emptyAstInfoPosition
 )

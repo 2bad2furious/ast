@@ -10,7 +10,7 @@ sealed class StringComponent() : AstSelfTypedWithExtensions<StringComponent>
 
 data class StringComponentRaw(
     val string: String,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : StringComponent() {
     override val description: String = """"${string.escape()}""""
 
@@ -27,7 +27,7 @@ fun String.asStringComponentRaw(
 
 data class StringComponentEscape(
     val escape: String,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : StringComponent() {
     override val description: String = """Escape("${escape.escape()}")"""
 
@@ -56,7 +56,7 @@ sealed class StringComponentExpression<A : Ast>() : StringComponent() {
 
 data class StringComponentAstExpression(
     override val expression: Ast,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : StringComponentExpression<Ast>(), Ast by expression {
     override fun withAttachments(attachments: AstAttachments): StringComponentAstExpression {
         return copy(attachments = attachments)
@@ -65,7 +65,7 @@ data class StringComponentAstExpression(
 
 data class StringComponentAstNodeExpression(
     override val expression: AstNode,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : StringComponentExpression<AstNode>(), AstNode by expression {
     override fun withAttachments(attachments: AstAttachments): StringComponentAstNodeExpression {
         return copy(attachments = attachments)

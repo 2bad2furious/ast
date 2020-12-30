@@ -46,7 +46,7 @@ interface AstNodeSelfTyped<Self : AstNode> : AstNode, AstSelfTyped<Self> {
         operator fun invoke(
             description: String,
             children: List<Ast>,
-            info: AstInfo? = null,
+            info: AstInfo? = null
         ): AstNode {
             return DefaultAstNode(description, children).withAstInfo(info)
         }
@@ -56,7 +56,7 @@ interface AstNodeSelfTyped<Self : AstNode> : AstNode, AstSelfTyped<Self> {
 data class DefaultAstNode(
     override val description: String,
     override val children: List<Ast>,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : AstNodeSelfTyped<DefaultAstNode>, AstSelfTypedWithAstInfo<DefaultAstNode> {
     override fun <State> TreeMapContext<State>.withChildren(children: List<Ast>): AstResult<State, DefaultAstNode> {
         return astSuccess(copy(children = children))

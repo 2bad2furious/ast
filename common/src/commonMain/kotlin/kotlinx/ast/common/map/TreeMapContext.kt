@@ -75,7 +75,7 @@ abstract class TreeMapContext<State> : TreeMapResultFactory<State> {
 internal fun <State> TreeMapContext<State>.recursiveFlattenInternal(
     node: AstNode,
     filter: TreeFilter?,
-    flattenSingle: Boolean,
+    flattenSingle: Boolean
 ): AstResult<State, List<Ast>> {
     val children = if (filter == null) {
         node.children
