@@ -14,7 +14,7 @@ fun <State> TreeMapBuilder<State>.convertKotlinKlassModifier(filter: TreeFilter)
             node.children.filterIsInstance<AstTerminal>().map { modifier ->
                 KlassModifier(
                     modifier.text,
-                    group,
+                    group
                 )
             }
         )

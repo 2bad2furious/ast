@@ -25,7 +25,7 @@ data class TestData(
     val summaryFile: File,
     val summaryContent: String?,
     val summaryInfoFile: File,
-    val summaryInfoContent: String?,
+    val summaryInfoContent: String?
 )
 
 private fun File.sourceFile(suffix: String): File {
@@ -58,7 +58,7 @@ internal fun testData(): List<TestData> {
                 summaryFile = summaryFile,
                 summaryContent = summaryFile.readTextOrNull(),
                 summaryInfoFile = summaryInfoFile,
-                summaryInfoContent = summaryInfoFile.readTextOrNull(),
+                summaryInfoContent = summaryInfoFile.readTextOrNull()
             )
         }
     }

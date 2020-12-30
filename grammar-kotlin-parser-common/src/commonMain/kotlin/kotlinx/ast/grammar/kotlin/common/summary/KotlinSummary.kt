@@ -9,7 +9,7 @@ sealed class KotlinSummary() : AstSelfTypedWithExtensions<KotlinSummary>
 
 data class PackageHeader(
     val identifier: List<KlassIdentifier>,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : KotlinSummary() {
     override val description: String = "PackageHeader(${identifier.identifierName()})"
 
@@ -22,7 +22,7 @@ data class Import(
     val identifier: List<KlassIdentifier>,
     val starProjection: Boolean = false,
     val alias: KlassIdentifier? = null,
-    override val attachments: AstAttachments = AstAttachments(),
+    override val attachments: AstAttachments = AstAttachments()
 ) : KotlinSummary() {
     override val description: String
         get() {

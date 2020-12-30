@@ -26,13 +26,13 @@ private class AntlrJavaParserImpl(
             start = AstInfoPosition(
                 index = token.startIndex,
                 line = token.line,
-                row = token.charPositionInLine + 1,
+                row = token.charPositionInLine + 1
             ),
             stop = AstInfoPosition(
                 index = token.stopIndex + 1,
                 line = token.line,
-                row = token.charPositionInLine + 1 + text.length,
-            ),
+                row = token.charPositionInLine + 1 + text.length
+            )
         )
         val name = when (token.type) {
             -1 ->
